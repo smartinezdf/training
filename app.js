@@ -1,36 +1,50 @@
-const STORAGE_KEY='sam-training-v1';
+const STORAGE_KEY='numa-training-v2';
 const state=loadState();
 let deferredPrompt=null;
 
 const plan=[
- {short:'Mon',name:'Monday',focus:'Heavy Lower — Quads + Glutes + Calves',sessions:[
-  ['Lower Strength A',['Hip thrust — 4 × 8–10','Hack squat or back squat — 3 × 6–10','Bulgarian split squat — 3 × 8 each','Leg press — 3 × 10–12','Leg extension — 2 × 12–15','Standing calf raise — 4 × 10–15','Tibialis raise — 3 × 15–20']],
-  ['Core — 8 min',['Hanging knee raise — 3 × 10–15','Cable crunch — 3 × 12–15','Plank — 2 × 45 sec']]
+ {short:'Mon',name:'Monday',focus:'Lower Body + Cardio — Lower is the priority',sessions:[
+  ['LOWER BODY',['Squat / hack squat — 4 × 5–6','RDL — 3 × 6–8','Bulgarian split squat — 3 × 8 each leg','Hip thrust — 3 × 8','Shin / tibialis raises — 3 × 10','Calf raises — 3 × 12','Core — 3 sets']],
+  ['CARDIO — choose based on how you feel',['30 min running','OR 25 min elliptical','OR 20 min StairMaster']],
+  ['Optional',['If you finish everything and still feel good, you can add a little upper body. Totally optional — do not add volume just to do more.']]
  ]},
- {short:'Tue',name:'Tuesday',focus:'Upper A + Easy Run + Tennis',sessions:[
-  ['Upper Strength A',['Lat pulldown — 3 × 8–12','Seated cable row — 3 × 10–12','DB shoulder press — 3 × 8–10','Incline DB press — 2 × 8–12','Lateral raise — 3 × 12–15','Biceps curl — 3 × 10–12','Face pull — 2 × 15']],
-  ['Run',['30 min easy conversational run']],['Tennis',['Afternoon lessons']],['Core',['Dead bug','Pallof press','Side plank']]
+ {short:'Tue',name:'Tuesday',focus:'Upper Body — Day 1 Pull + Push + optional cardio',sessions:[
+  ['UPPER BODY — DAY 1',['Lat pulldown — 3 × 8–10','DB bench press — 3 × 8–10','Seated cable row — 3 × 8–10','DB shoulder press — 3 × 8–10','Face pulls — 3 × 12–15','Bicep curls — 3 × 10–12','Tricep rope pushdown — 3 × 10–12']],
+  ['Cardio',['Optional — choose the cardio that fits your energy and schedule.']],
+  ['Strength note',['The last 2–3 reps should feel challenging while technique stays clean. You do not need to reach failure on every exercise.']]
  ]},
- {short:'Wed',name:'Wednesday',focus:'Heavy Lower — Hamstrings + Glutes + Adductors',sessions:[
-  ['Lower Strength B',['Romanian deadlift — 4 × 8–10','Hip thrust — 3 × 10–12','Reverse lunge — 3 × 10 each','Hamstring curl — 3 × 10–15','Adductor machine — 3 × 12–15','Hip abduction — 3 × 15–20','Seated calf raise — 3 × 12–18']],
-  ['Padel movement',['Split-step → first-step sprint — 6 each direction','Lateral shuffle 5–7 m — 6 reps','Reaction cone drill — 6–8 reps']],
-  ['Core',['Copenhagen plank — 2 × 20–30 sec each','Pallof press — 3 × 10 each']]
+ {short:'Wed',name:'Wednesday',focus:'HIIT Full Body — strength + cardio + coordination + endurance',sessions:[
+  ['WARM-UP — 8–10 min',['2 min easy jog','30 sec jumping jacks','30 sec high knees','30 sec butt kicks','10 walking lunges','10 air squats','10 inchworms','Hip, ankle and shoulder mobility']],
+  ['HIIT CIRCUIT — 40 sec work / 20 sec rest',['Squat jumps','Push-ups','Walking lunges','Mountain climbers','DB thrusters — squat then drive dumbbells overhead','Burpees','Alternating reverse lunges + knee drive','Renegade rows — keep hips stable','Skater jumps — land with control','Plank shoulder taps — keep hips stable']],
+  ['FINISHER — 3 rounds',['30 sec sprint / max effort','30 sec walk or rest','30 sec high knees','30 sec rest','Rest 1–2 min between rounds']],
+  ['Today’s goal',['This is the hard conditioning day. No extra cardio afterward. Push the intensity while keeping control and good technique.']]
  ]},
- {short:'Thu',name:'Thursday',focus:'Upper B + Intervals + Tennis',sessions:[
-  ['Upper Strength B',['Single-arm row — 3 × 10','Neutral-grip pulldown — 3 × 10–12','Push-ups or DB press — 3 × 8–12','Rear-delt fly — 3 × 12–15','Lateral raise — 3 × 12–15','Triceps pushdown — 3 × 10–12','External rotation — 2 × 15']],
-  ['Intervals',['5 min easy','1 min fast / 2 min easy × 6','5 min cooldown']],['Tennis',['Afternoon lessons']]
+ {short:'Thu',name:'Thursday',focus:'Upper Body — Day 2 Back + Shoulders + optional cardio',sessions:[
+  ['UPPER BODY — DAY 2',['Pull-ups / assisted pull-ups — 3 × 5–8','Single-arm DB row — 3 × 8–10 each side','Incline DB press — 3 × 8–10','Lateral raises — 3 × 12–15','Hammer curls — 3 × 10–12','Tricep overhead extension — 3 × 10–12']],
+  ['Cardio',['Optional — choose the cardio that fits your energy and schedule.']],
+  ['Strength note',['The last 2–3 reps should feel challenging while technique stays clean. You do not need to reach failure on every exercise.']]
  ]},
- {short:'Fri',name:'Friday',focus:'Athletic Day — Explosive + Long Cardio + Light Legs',sessions:[
-  ['Explosive / Reaction',['Dynamic warm-up — 6–8 min','Lateral bounds — 3 × 5 each','5 m reaction sprint — 6–8 reps','Cone change-of-direction — 6 reps','Split-step → sprint → recover — 6 reps','Skater jump — 2 × 8 each']],
-  ['Light Athletic Legs',['Goblet squat — 3 × 10','Single-leg RDL — 3 × 10','Step-up — 3 × 10 each','Walking lunge — 2 × 10 each','Adductor machine — 2 × 15','Hip abduction — 2 × 15','Standing calf raise — 3 × 15']],
-  ['Endurance — choose one',['8–12 km easy run; occasionally up to 15 km','OR 40–50 min easy run','OR 45 min bike / elliptical if impact feels high']],['Core',['Cable crunch','Dead bug','Side plank']]
+ {short:'Fri',name:'Friday',focus:'Lower Body + Cardio — Lower is the priority',sessions:[
+  ['LOWER BODY',['Deadlift — 3 × 5','Goblet / front squat — 3 × 8','Walking lunges — 3 × 10 each leg','Hip thrust — 3 × 8–10','Hamstring curl — 3 × 10','Calf raises — 3 × 12','Core — 3 sets']],
+  ['CARDIO — choose one',['30–45 min running','OR 12–15 × 1 min fast / 1 min easy','OR 25 min StairMaster','OR 30 min elliptical']],
+  ['Optional',['If you finish everything and feel great, you can add upper body. It is not required. Lower body remains the priority.']],
+  ['Why hamstrings stay',['Hamstring work stays in the program because it is important for running and leg strength/stability.']]
  ]},
- {short:'Sat',name:'Saturday',focus:'High Tennis Load + Recovery',sessions:[['Tennis',['~4 hours lessons']],['Recovery',['5–10 min hips/adductors/calves mobility','Easy walk if desired','No required gym or run']]]},
- {short:'Sun',name:'Sunday',focus:'High Tennis Load + Recovery',sessions:[['Tennis',['~4 hours lessons']],['Recovery',['Hip flexor mobility','Hamstring mobility','Calf / ankle mobility','Easy walk']],['Optional',['20–30 min Zone 2 only if tennis load is unusually light']]]}
+ {short:'Sat',name:'Saturday',focus:'Upper Body — Day 3 Full Upper + tennis workload',sessions:[
+  ['UPPER BODY — DAY 3',['Lat pulldown — 3 × 8–10','DB bench press — 3 × 8–10','Cable row — 3 × 8–10','Arnold press — 3 × 8–10','Lateral raises — 3 × 12–15','Face pulls — 3 × 12–15','Biceps + triceps — 3 × 10–12 each']],
+  ['Tennis / schedule',['Fit this upper session around your tennis workload. If the day is especially demanding, reduce or move the session instead of forcing volume.']],
+  ['Strength note',['The last 2–3 reps should feel challenging while technique stays clean. You do not need to reach failure on every exercise.']]
+ ]},
+ {short:'Sun',name:'Sunday',focus:'Recovery / Tennis — no required gym session',sessions:[
+  ['RECOVERY',['Tennis lessons / activity as scheduled','Easy walking if desired','Hip, ankle, calf, hamstring and shoulder mobility','No required strength or cardio session']]
+ ]}
 ];
 
 const strength=[
- ['Hip thrust','Lower','8–10'],['Hack/back squat','Lower','6–10'],['Bulgarian split squat','Lower','8–10'],['Romanian deadlift','Lower','8–10'],['Hamstring curl','Lower','10–15'],['Standing calf raise','Lower','10–15'],['Seated calf raise','Lower','12–18'],['Adductor machine','Lower','12–15'],['Hip abduction','Lower','15–20'],['Lat pulldown','Upper','8–12'],['Seated row','Upper','10–12'],['DB shoulder press','Upper','8–10'],['Incline DB press','Upper','8–12'],['Biceps curl','Upper','10–12'],['Triceps pushdown','Upper','10–12']
+ ['Squat / hack squat','Monday Lower','5–6'],['RDL','Monday Lower','6–8'],['Bulgarian split squat','Monday Lower','8 each'],['Hip thrust','Lower','8–10'],['Shin / tibialis raise','Monday Lower','10'],['Calf raise','Lower','12'],
+ ['Lat pulldown','Upper','8–10'],['DB bench press','Upper','8–10'],['Seated / cable row','Upper','8–10'],['DB shoulder press','Upper','8–10'],['Face pulls','Upper','12–15'],['Bicep curls','Upper','10–12'],['Tricep rope pushdown','Upper','10–12'],
+ ['Pull-ups / assisted','Thursday Upper','5–8'],['Single-arm DB row','Thursday Upper','8–10'],['Incline DB press','Thursday Upper','8–10'],['Lateral raises','Upper','12–15'],['Hammer curls','Thursday Upper','10–12'],['Tricep overhead extension','Thursday Upper','10–12'],
+ ['Deadlift','Friday Lower','5'],['Goblet / front squat','Friday Lower','8'],['Walking lunges','Friday Lower','10 each'],['Hamstring curl','Friday Lower','10'],['Arnold press','Saturday Upper','8–10']
 ];
 
 function defaultState(){return {week:1,selectedDay:Math.min(new Date().getDay()+6,6)%7,energy:3,soreness:3,doneDays:Array(7).fill(false),checks:{},logs:{},history:[]}}
@@ -70,14 +84,14 @@ function renderStrength(){
 }
 
 function renderAthletic(){
- $('#athletic').innerHTML=`<div class="card"><div class="big">Explosiveness</div><ul class="list"><li>Wednesday = short reaction exposure.</li><li>Friday = main explosive session.</li><li>Use 5–10 m accelerations, lateral movement, split-step reactions and change of direction.</li><li>Take enough rest to keep every rep fast.</li><li>Stop when speed or technique clearly drops.</li></ul></div><div class="card"><div class="big">Running</div><ul class="list"><li>Tuesday: 30 min easy.</li><li>Thursday: intervals.</li><li>Friday: main endurance day, usually 8–12 km.</li><li>Bike or elliptical replaces impact when court load is high.</li><li>No need to force a long run after an exhausting tennis weekend.</li></ul></div><div class="card"><div class="big">Mobility priorities</div><div class="focus">Ankles • calves • hip flexors • adductors • hamstrings • thoracic rotation • shoulders</div></div>`;
+ $('#athletic').innerHTML=`<div class="card"><div class="big">Wednesday HIIT</div><ul class="list"><li>Warm up for 8–10 minutes before starting.</li><li>Main circuit: 40 seconds work + 20 seconds rest for each of the 10 exercises.</li><li>Keep movement controlled even when intensity rises.</li><li>Finisher: 3 rounds of sprint, recovery, high knees and rest.</li><li>Rest 1–2 minutes between finisher rounds.</li><li>No additional cardio is needed after this session.</li></ul></div><div class="card"><div class="big">Cardio structure</div><ul class="list"><li>Monday: cardio only after lower body; choose run, elliptical or StairMaster.</li><li>Tuesday/Thursday: cardio is flexible and optional around upper body.</li><li>Wednesday: HIIT is the conditioning session.</li><li>Friday: cardio after lower; choose steady running, intervals, StairMaster or elliptical.</li><li>Lower-body strength always comes before cardio on Monday and Friday.</li></ul></div><div class="card"><div class="big">Strength rule</div><div class="focus">Keep the exercises consistent week to week. The last 2–3 reps should be difficult but technically clean. You do not need to train every set to failure.</div></div>`;
 }
 
 function renderProgress(){
  const done=state.doneDays.filter(Boolean).length;
  const checked=Object.values(state.checks).filter(Boolean).length;
  const logged=Object.values(state.logs).filter(x=>x&&x.weight).length;
- $('#progress').innerHTML=`<div class="metric-grid"><div class="metric"><div class="small">Days done</div><div class="value">${done}/7</div></div><div class="metric"><div class="small">Exercises checked</div><div class="value">${checked}</div></div><div class="metric"><div class="small">Strength lifts logged</div><div class="value">${logged}</div></div></div><div class="card"><div class="big">Coverage</div><div class="focus">Quads ✓✓ • Glutes ✓✓✓ • Hamstrings ✓✓ • Calves ✓✓✓ • Adductors ✓✓ • Abductors ✓✓ • Back ✓✓ • Shoulders ✓✓ • Chest ✓ • Arms ✓ • Core ✓✓✓✓ • Explosiveness ✓✓ • Running ✓✓✓</div></div>`;
+ $('#progress').innerHTML=`<div class="metric-grid"><div class="metric"><div class="small">Days done</div><div class="value">${done}/7</div></div><div class="metric"><div class="small">Exercises checked</div><div class="value">${checked}</div></div><div class="metric"><div class="small">Strength lifts logged</div><div class="value">${logged}</div></div></div><div class="card"><div class="big">Coverage</div><div class="focus">Quads ✓✓ • Glutes ✓✓ • Hamstrings ✓✓ • Calves ✓✓ • Tibialis ✓ • Back ✓✓✓ • Shoulders ✓✓✓ • Chest ✓✓✓ • Biceps ✓✓✓ • Triceps ✓✓✓ • Core ✓✓ • HIIT ✓ • Cardio ✓✓+</div></div>`;
 }
 
 function renderHeader(){
