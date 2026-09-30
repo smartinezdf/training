@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>NUMA</title>
+<style>
+:root{--bg:#0b0b0c;--card:#151517;--card2:#1c1c1f;--text:#f7f7f5;--muted:#9b9b9f;--line:#29292d;--accent:#d9ff57;--danger:#ff9d9d}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif}
+button,input,select{font:inherit}.app{max-width:760px;margin:auto;padding:20px 16px 110px}.top{display:flex;justify-content:space-between;align-items:end;gap:12px;margin-bottom:20px}
+.brand{font-size:32px;font-weight:800;letter-spacing:-1.5px}.tag{font-size:11px;letter-spacing:1.5px;color:var(--muted);font-weight:700}.week{font-size:12px;color:var(--muted)}
+.days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:0 0 18px}.day{border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:12px;padding:10px 2px;min-height:48px;font-size:11px;font-weight:800}.day.active{background:var(--accent);color:#111;border-color:var(--accent)}
+.hero{padding:4px 2px 16px}.eyebrow{color:var(--accent);font-size:12px;font-weight:800;letter-spacing:1px}.hero h1{font-size:27px;line-height:1.05;margin:7px 0 8px;letter-spacing:-.8px}.hero p{margin:0;color:var(--muted);font-size:14px;line-height:1.45}
+.readiness{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 14px}.selectbox{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px}.selectbox label{display:block;font-size:10px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.8px}.selectbox select{width:100%;margin-top:4px;background:transparent;color:var(--text);border:0;font-size:14px;outline:0}
+.advice{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;color:#d7d7da;font-size:13px;line-height:1.45;margin-bottom:18px}
+.section{margin-top:20px}.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}.section h2{font-size:13px;letter-spacing:.8px;margin:0;text-transform:uppercase}.pill{font-size:10px;color:var(--muted)}
+.exercise{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:13px;margin-bottom:8px}.exercise.done{opacity:.58}.ex-top{display:flex;align-items:flex-start;gap:10px}.check{width:22px;height:22px;accent-color:var(--accent);margin-top:1px}.ex-copy{flex:1;min-width:0}.ex-name{font-weight:750;font-size:15px}.ex-dose{color:var(--accent);font-size:12px;font-weight:750;margin-top:3px}.ex-note{color:var(--muted);font-size:12px;line-height:1.4;margin-top:5px}.log{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:11px}.log label{font-size:9px;color:var(--muted);text-transform:uppercase;font-weight:800;letter-spacing:.5px}.log input,.log select{display:block;width:100%;margin-top:4px;border:1px solid var(--line);background:var(--card2);color:var(--text);border-radius:10px;padding:9px 8px;min-width:0}
+.choice{display:grid;gap:7px}.choice label{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;font-size:14px}.choice input{accent-color:var(--accent)}
+.info{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:9px}.info strong{font-size:14px}.info p,.info li{color:var(--muted);font-size:13px;line-height:1.5}.info ul{padding-left:18px;margin-bottom:0}
+.timer{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px}.timer button{border:0;border-radius:11px;padding:10px 13px;background:var(--accent);color:#111;font-weight:800}.timer button.secondary{background:var(--card2);color:var(--text);border:1px solid var(--line)}.clock{font-size:24px;font-weight:850;min-width:70px}
+.progressbar{height:8px;background:var(--card2);border-radius:999px;overflow:hidden;margin:9px 0}.progressbar span{display:block;height:100%;background:var(--accent);width:0}
+.bottom{position:fixed;left:0;right:0;bottom:0;background:rgba(11,11,12,.94);backdrop-filter:blur(16px);border-top:1px solid var(--line);padding:9px 14px calc(9px + env(safe-area-inset-bottom));z-index:5}.bottom-inner{max-width:760px;margin:auto;display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.nav{border:0;background:transparent;color:var(--muted);padding:10px 4px;font-size:12px;font-weight:750}.nav.active{color:var(--accent)}
+.week-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:8px}.week-card button{width:100%;text-align:left;border:0;background:none;color:inherit;padding:0}.week-card .wday{font-weight:800}.week-card .wfocus{color:var(--muted);font-size:13px;margin-top:4px}.week-card .wdone{color:var(--accent);font-size:11px;margin-top:7px}
+.metric{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:8px}.metric big{font-size:26px;font-weight:850}.metric span{display:block;color:var(--muted);font-size:12px;margin-top:3px}.reset{margin-top:20px;border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:12px;padding:10px 12px}
+.hidden{display:none!important}
+@media(max-width:380px){.app{padding-left:12px;padding-right:12px}.days{gap:4px}.day{font-size:10px}.log{grid-template-columns:1fr 1fr}.log label:last-child{grid-column:1/-1}}
+</style>
+</head>
+<body>
+<main class="app">
+  <header class="top"><div><div class="tag">LEAN • STRONG • EXPLOSIVE</div><div class="brand">NUMA</div></div><div class="week" id="weekText">Week 1 of 6</div></header>
+  <div class="days" id="dayTabs"></div>
+  <section id="todayView">
+    <div class="hero"><div class="eyebrow" id="dayEyebrow"></div><h1 id="dayTitle"></h1><p id="dayDesc"></p></div>
+    <div class="readiness">
+      <div class="selectbox"><label>Energy</label><select id="energy"><option value="5">5 — Great</option><option value="4">4 — Good</option><option value="3" selected>3 — Normal</option><option value="2">2 — Low</option><option value="1">1 — Very low</option></select></div>
+      <div class="selectbox"><label>Leg soreness</label><select id="soreness"><option value="1">1 — Fresh</option><option value="2">2 — Mild</option><option value="3" selected>3 — Moderate</option><option value="4">4 — Sore</option><option value="5">5 — Very sore</option></select></div>
+    </div>
+    <div class="advice" id="advice"></div>
+    <div id="workout"></div>
+  </section>
+  <section id="weekView" class="hidden"></section>
+  <section id="progressView" class="hidden"></section>
+</main>
+<nav class="bottom"><div class="bottom-inner"><button class="nav active" data-view="today">Today</button><button class="nav" data-view="week">Week</button><button class="nav" data-view="progress">Progress</button></div></nav>
+
+<script>
+const PLAN=[
+{day:"MON",name:"Monday",title:"Lower Body + Cardio",desc:"Lower is the priority. Strength first so your legs are fresh for good force, technique and quality reps. Cardio comes after.",sections:[
+{title:"Lower Body",type:"strength",items:[
+["Squat / Hack Squat","4 × 5–6"],["RDL","3 × 6–8"],["Bulgarian Split Squat","3 × 8 each leg"],["Hip Thrust","3 × 8"],["Shin / Tibialis Raise","3 × 10"],["Calf Raise","3 × 12"],["Core","3 sets"]]},
+{title:"Cardio — choose one",type:"choice",items:["30 min running","25 min elliptical","20 min StairMaster"]},
+{title:"Optional",type:"info",text:"If you finish everything and still feel good, you can add a little upper body. Totally optional — do not add volume just to do more."}]},
+{day:"TUE",name:"Tuesday",title:"Upper Body — Day 1",desc:"Pull + Push. Cardio can be distributed however you want around upper-body days.",sections:[
+{title:"Upper — Pull + Push",type:"strength",items:[["Lat Pulldown","3 × 8–10"],["DB Bench Press","3 × 8–10"],["Seated Cable Row","3 × 8–10"],["DB Shoulder Press","3 × 8–10"],["Face Pulls","3 × 12–15"],["Bicep Curls","3 × 10–12"],["Tricep Rope Pushdown","3 × 10–12"]]},
+{title:"Training rule",type:"info",text:"The last 2–3 reps should feel challenging while technique stays clean. You do not need to reach failure on every exercise."},
+{title:"Optional cardio",type:"choice",items:["Easy run","Elliptical","Bike","StairMaster","No cardio today"]}]},
+{day:"WED",name:"Wednesday",title:"HIIT Full Body 🔥",desc:"A fun, different conditioning day for strength, cardio, coordination and endurance. No extra cardio is needed afterward.",sections:[
+{title:"Warm-up — 8–10 min",type:"list",items:["2 min easy jog","30s jumping jacks","30s high knees","30s butt kicks","10 walking lunges","10 air squats","10 inchworms","Hip, ankle and shoulder mobility"]},
+{title:"HIIT Circuit — 40s work / 20s rest",type:"hiit",items:[
+["Squat Jumps","Explosive but land under control."],["Push-ups","Keep a strong body line."],["Walking Lunges","Controlled steps and stable knees."],["Mountain Climbers","Keep your core engaged."],["DB Thrusters","Squat with a dumbbell in each hand, then drive them overhead as you stand."],["Burpees","Continuous movement with good control."],["Reverse Lunge + Knee Drive","Step back, control the lunge, then drive that knee upward. Alternate legs."],["Renegade Rows","From plank with dumbbells, row one side at a time while keeping hips stable."],["Skater Jumps","Jump laterally from leg to leg; land with control and use your arms."],["Plank Shoulder Taps","Tap the opposite shoulder while minimizing hip rotation."]]},
+{title:"Finisher — 3 rounds",type:"list",items:["30s sprint / maximum effort","30s walk or rest","30s high knees","30s rest","Rest 1–2 min between rounds"]},
+{title:"Done means done",type:"info",text:"This is the strong conditioning session of the week. No additional cardio afterward."}]},
+{day:"THU",name:"Thursday",title:"Upper Body — Day 2",desc:"Back + shoulders. Add cardio only if it fits your energy and schedule.",sections:[
+{title:"Back + Shoulders",type:"strength",items:[["Pull-ups / Assisted Pull-ups","3 × 5–8"],["Single-arm DB Row","3 × 8–10 each side"],["Incline DB Press","3 × 8–10"],["Lateral Raises","3 × 12–15"],["Hammer Curls","3 × 10–12"],["Tricep Overhead Extension","3 × 10–12"]]},
+{title:"Training rule",type:"info",text:"The last 2–3 reps should feel challenging with clean technique. Failure is not required."},
+{title:"Optional cardio",type:"choice",items:["Easy run","Elliptical","Bike","StairMaster","No cardio today"]}]},
+{day:"FRI",name:"Friday",title:"Lower Body + Cardio ⚡️",desc:"Lower comes first again. This session is slightly more dynamic to close the week; cardio complements strength rather than taking away from it.",sections:[
+{title:"Lower Body",type:"strength",items:[["Deadlift","3 × 5"],["Goblet / Front Squat","3 × 8"],["Walking Lunges","3 × 10 each leg"],["Hip Thrust","3 × 8–10"],["Hamstring Curl / Femoral","3 × 10"],["Calf Raises","3 × 12"],["Core","3 sets"]]},
+{title:"Cardio — choose one",type:"choice",items:["30–45 min running","12–15 × 1 min fast / 1 min easy","25 min StairMaster","30 min elliptical"]},
+{title:"Optional",type:"info",text:"If you finish everything and feel great, upper body can be added. It is optional, never mandatory."}]},
+{day:"SAT",name:"Saturday",title:"Upper Body — Day 3",desc:"Full upper body. Keep it flexible around your tennis workload.",sections:[
+{title:"Full Upper",type:"strength",items:[["Lat Pulldown","3 × 8–10"],["DB Bench Press","3 × 8–10"],["Cable Row","3 × 8–10"],["Arnold Press","3 × 8–10"],["Lateral Raises","3 × 12–15"],["Face Pulls","3 × 12–15"],["Biceps","3 × 10–12"],["Triceps","3 × 10–12"]]},
+{title:"Training rule",type:"info",text:"Make the last 2–3 reps challenging while maintaining good technique. Adjust volume if tennis makes this a high-load day."}]},
+{day:"SUN",name:"Sunday",title:"Recovery / Tennis",desc:"No required gym session. Recover so Monday's lower-body session can be high quality.",sections:[
+{title:"Recovery",type:"list",items:["Tennis / activity as scheduled","Easy walking if desired","Hip and adductor mobility","Ankle and calf mobility","Hamstring mobility","Shoulder mobility","No required strength or cardio"]}]}
+];
+
+let state;
+try{state=JSON.parse(localStorage.getItem("numaState"))||{}}catch(e){state={}}
+state.logs=state.logs||{};state.checked=state.checked||{};state.choices=state.choices||{};state.week=state.week||1;state.energy=state.energy||3;state.soreness=state.soreness||3;
+const actualDay=(new Date().getDay()+6)%7;
+let selected=Number.isInteger(state.selected)?state.selected:actualDay;
+let currentView="today";
+const $=s=>document.querySelector(s);
+function save(){state.selected=selected;localStorage.setItem("numaState",JSON.stringify(state))}
+function key(si,ii){return selected+"-"+si+"-"+ii}
+function tabs(){const el=$("#dayTabs");el.innerHTML="";PLAN.forEach((d,i)=>{let b=document.createElement("button");b.className="day"+(i===selected?" active":"");b.textContent=d.day;b.onclick=()=>{selected=i;save();renderToday();tabs();show("today")};el.appendChild(b)})}
+function advice(){const e=+$("#energy").value,s=+$("#soreness").value;if(e<=2||s>=4)return "Low-readiness day: keep technique first, reduce load or sets if needed, and choose lower-impact cardio. Do not force intensity.";if(e>=4&&s<=2)return "You are feeling fresh. Follow the full plan, but keep strength technically clean and do not add volume just because you can.";return "Normal day: follow the plan as written. Let the last 2–3 reps feel challenging while keeping good technique."}
+function exercise(si,ii,item){const k=key(si,ii),l=state.logs[k]||{};return `<div class="exercise ${state.checked[k]?"done":""}"><div class="ex-top"><input class="check" type="checkbox" data-check="${k}" ${state.checked[k]?"checked":""}><div class="ex-copy"><div class="ex-name">${item[0]}</div><div class="ex-dose">${item[1]}</div>${item[2]?`<div class="ex-note">${item[2]}</div>`:""}<div class="log"><label>Weight<input data-log="${k}" data-field="weight" value="${l.weight||""}" inputmode="decimal" placeholder="—"></label><label>Reps<input data-log="${k}" data-field="reps" value="${l.reps||""}" inputmode="numeric" placeholder="—"></label><label>RIR<select data-log="${k}" data-field="rir"><option value="">—</option>${[3,2,1,0].map(x=>`<option ${String(l.rir)===String(x)?"selected":""}>${x}</option>`).join("")}</select></label></div></div></div></div>`}
+function renderToday(){const d=PLAN[selected];$("#dayEyebrow").textContent=d.name.toUpperCase();$("#dayTitle").textContent=d.title;$("#dayDesc").textContent=d.desc;$("#energy").value=state.energy;$("#soreness").value=state.soreness;$("#advice").textContent=advice();let h="";d.sections.forEach((s,si)=>{h+=`<section class="section"><div class="section-head"><h2>${s.title}</h2></div>`;if(s.type==="strength")s.items.forEach((x,ii)=>h+=exercise(si,ii,x));else if(s.type==="choice"){h+=`<div class="choice">`;s.items.forEach((x,ii)=>{let k=key(si,ii);h+=`<label><input type="radio" name="choice-${selected}-${si}" data-choice="${k}" ${state.choices[selected+"-"+si]===x?"checked":""}><span>${x}</span></label>`});h+="</div>"}else if(s.type==="info")h+=`<div class="info"><p>${s.text}</p></div>`;else if(s.type==="list"){h+=`<div class="info"><ul>${s.items.map(x=>`<li>${x}</li>`).join("")}</ul></div>`}else if(s.type==="hiit"){s.items.forEach((x,ii)=>{let k=key(si,ii);h+=`<div class="exercise ${state.checked[k]?"done":""}"><div class="ex-top"><input class="check" type="checkbox" data-check="${k}" ${state.checked[k]?"checked":""}><div class="ex-copy"><div class="ex-name">${ii+1}. ${x[0]}</div><div class="ex-dose">40s work • 20s rest</div><div class="ex-note">${x[1]}</div></div></div></div>`});h+=`<div class="info"><strong>40 / 20 Timer</strong><div class="timer"><span class="clock" id="clock">40</span><button id="timerStart" type="button">Start</button><button id="timerReset" class="secondary" type="button">Reset</button></div><p id="timerPhase">WORK</p></div>`}h+="</section>"});$("#workout").innerHTML=h;bindWorkout()}
+function bindWorkout(){$$("#workout [data-check]").forEach(c=>c.onchange=()=>{state.checked[c.dataset.check]=c.checked;save();renderToday()});$$("#workout [data-log]").forEach(i=>i.onchange=()=>{let k=i.dataset.log;state.logs[k]=state.logs[k]||{};state.logs[k][i.dataset.field]=i.value;save()});$$("#workout [data-choice]").forEach(r=>r.onchange=()=>{if(r.checked){let parts=r.dataset.choice.split("-"),sec=parts[0]+"-"+parts[1];let labels=[...r.closest(".choice").querySelectorAll("label")],label=r.closest("label");state.choices[sec]=label.innerText.trim();save()}});let start=$("#timerStart"),reset=$("#timerReset");if(start){let interval=null,remaining=40,work=true;const draw=()=>{$("#clock").textContent=remaining;$("#timerPhase").textContent=work?"WORK":"REST"};start.onclick=()=>{if(interval)return;interval=setInterval(()=>{remaining--;if(remaining<0){work=!work;remaining=work?40:20}draw()},1000)};reset.onclick=()=>{clearInterval(interval);interval=null;remaining=40;work=true;draw()}}}
+function $$(s){return [...document.querySelectorAll(s)]}
+$("#energy").onchange=e=>{state.energy=+e.target.value;save();$("#advice").textContent=advice()};$("#soreness").onchange=e=>{state.soreness=+e.target.value;save();$("#advice").textContent=advice()};
+function renderWeek(){let h="";PLAN.forEach((d,i)=>{const prefix=i+"-",total=Object.keys(state.checked).filter(k=>k.startsWith(prefix)).length,done=Object.keys(state.checked).filter(k=>k.startsWith(prefix)&&state.checked[k]).length;h+=`<div class="week-card"><button data-open="${i}"><div class="wday">${d.day} — ${d.title}</div><div class="wfocus">${d.desc}</div><div class="wdone">${done} items checked</div></button></div>`});$("#weekView").innerHTML=h;$$("[data-open]").forEach(b=>b.onclick=()=>{selected=+b.dataset.open;save();tabs();renderToday();show("today")})}
+function renderProgress(){const checked=Object.values(state.checked).filter(Boolean).length,logged=Object.values(state.logs).filter(x=>x.weight||x.reps).length;let h=`<div class="metric"><big>${checked}</big><span>exercises / activities checked</span></div><div class="metric"><big>${logged}</big><span>strength entries logged</span></div><div class="metric"><big>Week ${state.week}</big><span>of your 6-week progression</span><div class="progressbar"><span style="width:${state.week/6*100}%"></span></div><div class="timer"><button id="minusWeek" class="secondary">− Week</button><button id="plusWeek">+ Week</button></div></div><div class="info"><strong>Progression rule</strong><p>Keep the main strength exercises consistent. Start with a load that leaves roughly 2–3 reps in reserve. Add reps with clean technique. When you can hit the top of the rep range across your work sets with about 1–2 reps in reserve, increase the load slightly next time.</p></div><button class="reset" id="resetData">Reset all NUMA data</button>`;$("#progressView").innerHTML=h;$("#minusWeek").onclick=()=>{state.week=Math.max(1,state.week-1);save();updateWeek();renderProgress()};$("#plusWeek").onclick=()=>{state.week=Math.min(6,state.week+1);save();updateWeek();renderProgress()};$("#resetData").onclick=()=>{if(confirm("Reset all saved NUMA training data?")){localStorage.removeItem("numaState");location.reload()}}}
+function updateWeek(){$("#weekText").textContent=`Week ${state.week} of 6`}
+function show(v){currentView=v;$("#todayView").classList.toggle("hidden",v!=="today");$("#weekView").classList.toggle("hidden",v!=="week");$("#progressView").classList.toggle("hidden",v!=="progress");$$(".nav").forEach(n=>n.classList.toggle("active",n.dataset.view===v));if(v==="week")renderWeek();if(v==="progress")renderProgress()}
+$$(".nav").forEach(n=>n.onclick=()=>show(n.dataset.view));
+tabs();updateWeek();renderToday();
+</script>
+</body>
+</html>
